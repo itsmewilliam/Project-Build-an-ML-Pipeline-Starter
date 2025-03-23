@@ -46,7 +46,9 @@ def test_proper_boundaries(data: pd.DataFrame):
     """
     idx = data['longitude'].between(-74.25, -73.50) & data['latitude'].between(40.5, 41.2)
 
-    assert np.sum(~idx) == 0
+    # Trigger failure if even one row is outside boundaries
+    num_invalid_rows = np.sum(~idx)
+    assert num_invalid_rows == 0, f"Found {num_invalid_rows} rows outside of NYC boundaries."
 
 
 def test_similar_neigh_distrib(data: pd.DataFrame, ref_data: pd.DataFrame, kl_threshold: float):
